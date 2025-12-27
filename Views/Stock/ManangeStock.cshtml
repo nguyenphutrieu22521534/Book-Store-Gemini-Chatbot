@@ -1,0 +1,28 @@
+﻿@model StockDTO
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Manage Stock";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">Manage Stock</h4>
+
+            <form asp-action="ManangeStock">
+                <input type="hidden" asp-for="BookId" />
+
+                <div class="mb-3">
+                    <label asp-for="Quantity" class="form-label">Quantity</label>
+                    <input type="number" class="form-control" asp-for="Quantity" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-info">Update</button>
+                    <a asp-action="Index" asp-controller="Stock" class="btn btn-secondary">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

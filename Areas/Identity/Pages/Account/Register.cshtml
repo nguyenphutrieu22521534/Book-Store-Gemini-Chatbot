@@ -1,0 +1,140 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<!-- Theme Styles -->
+<style>
+    :root {
+        --color-primary: #1f2937;
+        --color-primary-hover: #374151;
+        --color-secondary: #6b7280;
+        --color-background: #f9fafb;
+        --color-surface: #ffffff;
+        --color-accent: #cbd5e1;
+        --color-text-dark: #111827;
+        --color-text-light: #ffffff;
+        --color-border: #e5e7eb;
+    }
+
+    /* General background */
+    body {
+        background-color: var(--color-background);
+        color: var(--color-text-dark);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Card Styling */
+    .card {
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 1rem;
+    }
+
+    /* Theme Buttons */
+    .btn-theme {
+        background-color: var(--color-primary);
+        color: var(--color-text-light);
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-theme:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+    .btn-outline-theme {
+        background-color: transparent;
+        color: var(--color-primary);
+        border: 2px solid var(--color-primary);
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline-theme:hover {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+        }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7 col-sm-9">
+            <!-- Card -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4 fw-bold" style="color: var(--color-primary);">
+                        @ViewData["Title"]
+                    </h2>
+                    <p class="text-muted text-center mb-4">Create a new account</p>
+
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                        <!-- Email -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control rounded-3" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label asp-for="Input.Email"></label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control rounded-3" autocomplete="new-password" aria-required="true" placeholder="Password" />
+                            <label asp-for="Input.Password"></label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.ConfirmPassword" class="form-control rounded-3" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" />
+                            <label asp-for="Input.ConfirmPassword"></label>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <!-- Register Button -->
+                        <div class="d-grid">
+                            <button id="registerSubmit" type="submit"
+                                    class="btn btn-theme btn-lg rounded-3">
+                                <i class="bi bi-person-plus me-2"></i> Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- External Logins -->
+            <div class="card shadow-sm border-0 rounded-4 mt-4">
+                @* <div class="card-body text-center">
+                    <h5 class="fw-semibold mb-3">Or register using another service</h5>
+                    <hr />
+                    @if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <p class="text-muted">
+                            No external authentication services are configured.
+                            <a href="https://go.microsoft.com/fwlink/?LinkID=532715" target="_blank" class="text-decoration-none">Learn how to set them up</a>.
+                        </p>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit"
+                                        class="btn btn-outline-theme w-100 mb-2 rounded-3 fw-semibold"
+                                        name="provider" value="@provider.Name"
+                                        title="Register using your @provider.DisplayName account">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i> @provider.DisplayName
+                                </button>
+                            }
+                        </form>
+                    } *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,40 @@
+﻿@model UpdateOrderStatusModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "UpdateOrderStatus";
+}
+
+<div class="container mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Update Order Status</h4>
+        <a class="btn btn-secondary" asp-action="AllOrders">
+            <i class="bi bi-arrow-left"></i> Back to Orders
+        </a>
+    </div>
+
+    <div class="card shadow-sm" style="max-width: 600px;">
+        <div class="card-body">
+            <form asp-action="UpdateOrderStatus">
+                <input type="hidden" asp-for="OrderId" />
+
+                <div class="mb-3">
+                    <label asp-for="OrderStatusId" class="form-label">Order Status</label>
+                    <select class="form-select" asp-for="OrderStatusId" asp-items="@Model.OrderStatusList">
+                        <option value="">-- Select Order Status --</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="OrderStatusId"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Status</button>
+            </form>
+
+            @if (TempData["msg"] != null)
+            {
+                <div class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+                    @TempData["msg"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

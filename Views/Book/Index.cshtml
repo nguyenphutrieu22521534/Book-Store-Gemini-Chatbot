@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Book>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Books";
+}
+
+<div class="container mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Books</h4>
+        <a asp-action="AddBook" asp-controller="Book" class="btn btn-primary">Add More</a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle">
+                <thead class="text-white" style="background-color: #0b1a3d;">
+                    <tr>
+                        <th class="text-center">Image</th>
+                        <th>Book</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Price</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <img src="@(string.IsNullOrWhiteSpace(book.Image) ? "/img/NoImage.png" : "/img/" + book.Image)"
+                                     style="width:80px; height:100px;" alt="book image" />
+                            </td>
+                            <td>@book.BookName</td>
+                            <td>@book.AuthorName</td>
+                            <td>@book.Genre.GenreName</td>
+                            <td>@book.Price.ToString("C")</td>
+                            <td class="text-center">
+                                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                                    <a asp-action="UpdateBook" asp-controller="Book" asp-route-id="@book.Id" class="btn btn-sm btn-success">
+                                        Edit
+                                    </a>
+                                    <a asp-action="DeleteBook" asp-controller="Book" asp-route-id="@book.Id" class="btn btn-sm btn-danger" onclick="return window.confirm('Are you sure?')">
+                                        Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">No records found.</div>
+    }
+</div>

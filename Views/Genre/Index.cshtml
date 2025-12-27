@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Genre>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Genres";
+}
+
+<div class="container mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Genres</h4>
+        <a asp-action="AddGenre" asp-controller="Genre" class="btn btn-primary">
+            Add More
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="text-white" style="background-color: #0b1a3d;">
+                <tr>
+                    <th>Genre</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var genre in Model)
+                    {
+                        <tr>
+                            <td>@genre.GenreName</td>
+                            <td class="text-center">
+                                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                                    <a asp-action="UpdateGenre" asp-controller="Genre" asp-route-id="@genre.Id" class="btn btn-sm btn-success">
+                                        Edit
+                                    </a>
+                                    <a asp-action="DeleteGenre" asp-controller="Genre" asp-route-id="@genre.Id" class="btn btn-sm btn-danger" onclick="return window.confirm('Are you sure?')">
+                                        Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center">No genres found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

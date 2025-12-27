@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<style>
+    :root {
+        --color-primary: #1f2937;
+        --color-primary-hover: #374151;
+        --color-secondary: #6b7280;
+        --color-background: #f9fafb;
+        --color-surface: #ffffff;
+        --color-accent: #cbd5e1;
+        --color-text-dark: #111827;
+        --color-text-light: #ffffff;
+        --color-border: #e5e7eb;
+    }
+
+    /* Scope all styles under privacy-page to avoid affecting other pages */
+    .privacy-page {
+        padding: 30px 15px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+        .privacy-page h1 {
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .privacy-page p,
+        .privacy-page li {
+            line-height: 1.7;
+            font-size: 1rem;
+            color: var(--color-text-dark);
+        }
+
+        .privacy-page .card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .privacy-page .card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            }
+
+        .privacy-page h2 {
+            color: var(--color-primary);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .privacy-page .btn {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+            .privacy-page .btn:hover {
+                background-color: var(--color-primary-hover);
+            }
+</style>
+
+<div class="privacy-page">
+    <div class="card">
+        <h1>@ViewData["Title"]</h1>
+
+        <p>At <strong>BookMart</strong>, your privacy is our top priority. This Privacy Policy outlines the types of information we collect, how we use it, and the steps we take to ensure your data is secure while you enjoy our platform.</p>
+
+        <h2>Information We Collect</h2>
+        <ul>
+            <li><strong>Account Information:</strong> Name, email, password, and other details you provide during registration.</li>
+            <li><strong>Purchase Information:</strong> Your order history, payment details, and shipping addresses to process orders accurately.</li>
+            <li><strong>Browsing Data:</strong> Information about your usage of BookMart, including pages visited and interactions.</li>
+        </ul>
+
+        <h2>How We Use Your Information</h2>
+        <ul>
+            <li>To process your orders and manage your account efficiently.</li>
+            <li>To personalize your experience by recommending books and offers you may like.</li>
+            <li>To communicate important updates about BookMart, including promotions, service updates, or policy changes.</li>
+            <li>To analyze usage trends and improve the website’s performance and content.</li>
+        </ul>
+
+        <h2>Data Security</h2>
+        <p>BookMart implements industry-standard security measures to protect your personal data from unauthorized access, alteration, disclosure, or destruction. Your payment information is securely handled through trusted payment gateways and is never stored in plain text on our servers.</p>
+
+        <h2>Third-Party Services</h2>
+        <p>We may use third-party services such as analytics providers and email platforms to enhance your experience. These services are bound by strict confidentiality agreements and cannot access personal information beyond what is necessary for providing their services.</p>
+
+        <h2>Your Rights</h2>
+        <p>You have the right to review, update, or delete your personal information at any time through your BookMart account. You can also opt-out of marketing communications or request a copy of your data by contacting our support team.</p>
+
+        <h2>Contact Us</h2>
+        <p>If you have questions about this Privacy Policy or how your data is handled, please contact us at <strong>22521534@gm.uit.edu.vn</strong>.</p>
+
+        <a href="/" class="btn">Back to Home</a>
+    </div>
+</div>

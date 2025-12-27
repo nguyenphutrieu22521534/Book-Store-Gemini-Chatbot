@@ -1,0 +1,402 @@
+﻿@model BookDisplayModel
+
+<style>
+    /* Card Styling */
+    .card {
+        transition: all 0.3s ease;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin: 0;
+        border-radius: 10px;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+
+    .card-img-top {
+        transition: transform 0.5s ease;
+        object-fit: cover;
+    }
+
+    .card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .btn-primary, .btn-success {
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover, .btn-success:hover {
+            transform: scale(1.05);
+        }
+
+    .search-form {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+    }
+
+    .out-of-stock {
+        border: 1px solid;
+        padding: 5px 8px;
+        color: red;
+        border-radius: 5px;
+        text-align: center;
+        background-color: #fff0f0;
+    }
+
+    /* Cart bounce */
+    @@keyframes cartBounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-10px);
+        }
+
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+
+    .cart-update {
+        animation: cartBounce 0.8s;
+    }
+
+    /* Fade-in up animation (medium) */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(35px) scale(0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .book-item {
+        opacity: 0;
+        transform: translateY(35px);
+    }
+
+        .book-item.show {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+            /* Stagger effect (medium pace) */
+            .book-item.show:nth-child(1) {
+                animation-delay: 0.15s;
+            }
+
+            .book-item.show:nth-child(2) {
+                animation-delay: 0.3s;
+            }
+
+            .book-item.show:nth-child(3) {
+                animation-delay: 0.45s;
+            }
+
+            .book-item.show:nth-child(4) {
+                animation-delay: 0.6s;
+            }
+
+            .book-item.show:nth-child(5) {
+                animation-delay: 0.75s;
+            }
+
+            .book-item.show:nth-child(6) {
+                animation-delay: 0.9s;
+            }
+</style>
+
+<div class="container-fluid px-0 my-4">
+    <div class="row justify-content-center gx-0">
+        <div class="col-lg-10">
+            <!-- Search Form -->
+            <div class="search-form">
+                <form asp-action="Index" class="row g-3 align-items-center">
+                    <div class="col-12 col-md-4">
+                        <label class="visually-hidden" for="genreId">Genres</label>
+                        <select class="form-select" id="genreId" name="genreId">
+                            <option value="">All Genres</option>
+                            @foreach (var genre in Model.Genres)
+                            {
+                                <option selected="@(genre.Id == Model.GenreId)" value="@genre.Id">@genre.GenreName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-5">
+                        <label class="visually-hidden" for="sterm">Search by title</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="micButton" style="cursor:pointer;">
+                                <i class="bi bi-mic"></i>
+                            </span>
+                            <input type="text" class="form-control" value="@Model.STerm" id="sterm" name="sterm" placeholder="Search by title">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                        <button type="submit" class="btn btn-primary w-100 mb-2">
+                            <i class="fas fa-search me-2"></i>Search
+                        </button>
+                        <a href="/Home/Index" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-sync-alt me-2"></i>Reset
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Books Grid -->
+            @if (User.IsInRole(Roles.Admin.ToString()))
+            {
+
+                <div class="row g-4 gx-0">
+                    @{
+                        foreach (var book in Model.Books)
+                        {
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 book-item">
+                                <div class="card h-100">
+                                    @if (string.IsNullOrEmpty(book.Image))
+                                    {
+                                        <img src="/img/NoImage.png" class="card-img-top" alt="@book.BookName" style="height: 250px; object-fit: cover;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/img/@book.Image" class="card-img-top" alt="@book.BookName" style="height: 250px; object-fit: cover;" />
+                                    }
+
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">@book.BookName</h5>
+                                        <div class="card-text mb-2">
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-bookmark me-1"></i> <strong>Genre:</strong> @book.GenreName
+                                            </small>
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-user me-1"></i> <strong>Author:</strong> @book.AuthorName
+                                            </small>
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-tag me-1"></i> <strong>Price:</strong> @book.Price Rs.
+                                            </small>
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-tag me-1"></i> <strong>Quantity:</strong> @book.Quantity
+                                            </small>
+                                        </div>
+
+                                        <div class="mt-auto">
+                                            @if (book.Quantity > 0)
+                                            {
+                                                <a asp-action="ManangeStock" asp-controller="Stock" asp-route-bookId="@book.Id" class="btn btn-primary w-100"> Update Stock</a>
+                                            }
+                                            else
+                                            {
+                                            // <div class="d-flex align-items-center gap-2">
+                                                <div class="out-of-stock">
+                                                    <i class="fas fa-exclamation-circle me-1"></i> Out of stock
+                                                </div>
+                                                    <a asp-action="ManangeStock" asp-controller="Stock" asp-route-bookId="@book.Id" class="btn btn-primary w-100"> Update Stock</a>
+                                            // </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+
+
+            }
+            else
+            {
+
+                <div class="row g-4 gx-0">
+                    @{
+                        foreach (var book in Model.Books)
+                        {
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 book-item">
+                                <div class="card h-100">
+                                    @if (string.IsNullOrEmpty(book.Image))
+                                    {
+                                        <img src="/img/NoImage.png" class="card-img-top" alt="@book.BookName" style="height: 250px; object-fit: cover;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/img/@book.Image" class="card-img-top" alt="@book.BookName" style="height: 250px; object-fit: cover;" />
+                                    }
+
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">@book.BookName</h5>
+                                        <div class="card-text mb-2">
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-bookmark me-1"></i> <strong>Genre:</strong> @book.GenreName
+                                            </small>
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-user me-1"></i> <strong>Author:</strong> @book.AuthorName
+                                            </small>
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-tag me-1"></i> <strong>Price:</strong> @book.Price Rs.
+                                            </small>
+                                        </div>
+
+                                        <div class="mt-auto">
+                                            @if (book.Quantity > 0)
+                                            {
+                                                <button type="button" onclick="add(@book.Id, this)" class="btn btn-primary w-100">
+                                                    <i class="fas fa-shopping-cart me-2"></i>Add to cart
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <div class="out-of-stock">
+                                                    <i class="fas fa-exclamation-circle me-1"></i> Out of stock
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            
+            
+            }
+          
+
+            @if (!Model.Books.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No books found</h4>
+                    <p class="text-muted">Try adjusting your search filters</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Add to cart
+        async function add(bookId, buttonElement) {
+            var usernameEl = document.getElementById("username");
+            if (usernameEl == null) {
+                window.location.href = "/Identity/Account/Login";
+                return;
+            }
+
+            const originalText = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Adding...';
+            buttonElement.disabled = true;
+
+            try {
+                var response = await fetch(`/Cart/AddItem?bookId=${bookId}`);
+                if (response.status == 200) {
+                    var result = await response.json();
+                    var cartCountEl = document.getElementById("cartCount");
+
+                    cartCountEl.innerHTML = result;
+                    cartCountEl.classList.add('cart-update');
+                    setTimeout(() => cartCountEl.classList.remove('cart-update'), 800);
+
+                    buttonElement.innerHTML = '<i class="fas fa-shopping-bag me-2"></i>Go to Cart';
+                    buttonElement.classList.remove('btn-primary');
+                    buttonElement.classList.add('btn-success');
+                    buttonElement.disabled = false;
+
+                    buttonElement.onclick = function () {
+                        window.location.href = "/Cart/GetUserCart";
+                    };
+                } else {
+                    throw new Error('Failed to add item');
+                }
+            }
+            catch (err) {
+                console.log(err);
+                buttonElement.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Error';
+                buttonElement.classList.add('btn-danger');
+
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalText;
+                    buttonElement.classList.remove('btn-danger');
+                    buttonElement.disabled = false;
+                }, 2000);
+            }
+        }
+
+        // Scroll animation observer
+        document.addEventListener("DOMContentLoaded", () => {
+            const books = document.querySelectorAll(".book-item");
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("show");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            books.forEach(book => observer.observe(book));
+        });
+
+        // Speech recognition for mic button (toggle start/stop)
+        document.addEventListener("DOMContentLoaded", () => {
+            const micButton = document.getElementById("micButton");
+            const searchInput = document.getElementById("sterm");
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            let recognition;
+            let isListening = false;
+
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.lang = "en-US";
+                recognition.continuous = false;
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    isListening = true;
+                    micButton.innerHTML = '<i class="bi bi-mic-fill text-danger"></i>';
+                };
+
+                recognition.onend = () => {
+                    isListening = false;
+                    micButton.innerHTML = '<i class="bi bi-mic"></i>';
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    searchInput.value = transcript;
+                };
+
+                micButton.addEventListener("click", () => {
+                    if (!isListening) {
+                        recognition.start();
+                    } else {
+                        recognition.stop();
+                    }
+                });
+            } else {
+                micButton.addEventListener("click", () => {
+                    alert("Speech Recognition is not supported in this browser.");
+                });
+            }
+        });
+    </script>
+}

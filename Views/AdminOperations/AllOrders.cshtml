@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Order>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "AllOrders";
+}
+
+<div class="container mt-3">
+    <h4 class="mb-3">Orders</h4>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle">
+                <thead class="text-white" style="background-color: #0b1a3d;">
+                    <tr>
+                        <th>Order Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile No</th>
+                        <th>Address</th>
+                        <th>Payment Status</th>
+                        <th>Order Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td style="white-space: nowrap;">@order.CreateDate.ToString("dd-MM-yyyy")</td>
+                            <td>@order.Name</td>
+                            <td>@order.Email</td>
+                            <td>@order.MobileNumber</td>
+                            <td>@order.Address</td>
+                            <td>
+                                <span class="badge @(order.IsPaid ? "bg-success" : "bg-danger")">
+                                    @order.PaymentMethod | @(order.IsPaid ? "Paid" : "Not Paid")
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">@order.OrderStatus.StatusName</span>
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-@order.Id" class="btn btn-sm btn-primary">
+                                        Order Detail
+                                    </button>
+                                    <a asp-action="UpdateOrderStatus" asp-route-orderId="@order.Id" class="btn btn-sm btn-info">
+                                        Change Status
+                                    </a>
+                                    <a asp-action="TogglePaymentStatus" asp-route-orderId="@order.Id" class="btn btn-sm btn-warning">
+                                        Toggle Payment
+                                    </a>
+                                </div>
+
+                                @* Modal (placed inside TD for each order) *@
+                                @await Html.PartialAsync("/Views/AdminOperations/_OrderDetailModal.cshtml",
+                                new OrderDetailModalDTO
+                                {
+                                    DivId = order.Id.ToString(),
+                                    OrderDetail = order.OrderDetail
+                                })
+                    </td>
+                </tr>
+                                }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">No orders found.</div>
+    }
+</div>

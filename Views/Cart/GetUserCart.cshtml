@@ -1,0 +1,368 @@
+﻿@model ShoppingCart
+
+@{
+    ViewData["Title"] = "GetUserCart";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shopping Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary-color: #1f2937;
+            --secondary-color: #f9fafb;
+            --accent-color: #0ea5e9;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+        }
+
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .cart-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .cart-header {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+
+            .cart-table th {
+                background-color: var(--primary-color);
+                color: white;
+                padding: 15px;
+                text-align: left;
+            }
+
+            .cart-table tr {
+                background: white;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+                border-radius: 10px;
+                transition: all 0.3s ease;
+                animation: slideIn 0.5s ease forwards;
+                opacity: 0;
+            }
+
+                .cart-table tr:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                }
+
+            .cart-table td {
+                padding: 20px;
+                vertical-align: middle;
+            }
+
+        .book-image {
+            width: 80px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+            .book-image:hover {
+                transform: scale(1.05);
+            }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-quantity {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+            .btn-quantity:hover {
+                transform: scale(1.1);
+            }
+
+        .stock-message {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .cart-summary {
+            background: linear-gradient(120deg, var(--secondary-color), #fff);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            animation: fadeInUp 0.6s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        .btn-checkout {
+            background: var(--success-color);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(28, 200, 138, 0.3);
+        }
+
+            .btn-checkout:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 12px rgba(28, 200, 138, 0.4);
+            }
+
+        .stock-message.out-of-stock {
+            background-color: var(--danger-color) !important;
+            color: #fff !important;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Smaller empty cart section */
+        .empty-cart {
+            text-align: center;
+            padding: 30px 15px;
+            color: #6c757d;
+            animation: fadeIn 1s ease;
+            max-width: 300px;
+            margin: auto;
+        }
+
+            .empty-cart i {
+                font-size: 3rem;
+                margin-bottom: 15px;
+                color: #d1d3e2;
+            }
+
+            .empty-cart h3 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .empty-cart p.lead {
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+
+            .empty-cart .btn {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+        /* Animations */
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+
+        }
+
+        @@keyframes fadeInUp {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        @@keyframes slideIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .cart-container
+
+        {
+            padding: 15px;
+        }
+
+        .cart-table {
+            display: block;
+            overflow-x: auto;
+        }
+
+        .quantity-control {
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        }
+
+        /* Row animation delay */
+        .cart-table tr:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .cart-table tr:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .cart-table tr:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .cart-table tr:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container cart-container">
+        @if (Model != null && Model.CartDetails != null && Model.CartDetails.Count > 0)
+        {
+            <div class="cart-header">
+                <h2><i class="fas fa-shopping-cart me-2"></i> My Cart</h2>
+                <span class="badge bg-primary rounded-pill">@Model.CartDetails.Count items</span>
+            </div>
+
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Book</th>
+                        <th>Image</th>
+                        <th>Genre</th>
+                        <th>Unit Price (INR)</th>
+                        <th>Total Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CartDetails)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.Book.BookName</td>
+                            <td>
+                                @if (string.IsNullOrEmpty(item.Book.Image))
+                                {
+                                    <img src="/img/NoImage.png" class="book-image" alt="No Image" />
+                                }
+                                else
+                                {
+                                    <img src="/img/@item.Book.Image" class="book-image" alt="@item.Book.BookName" />
+                                }
+                            </td>
+                            <td><span class="badge bg-info">@item.Book.Genre.GenreName</span></td>
+                            <td>@item.Book.Price X @item.Quantity</td>
+                            <td class="fw-bold text-primary">@(item.Book.Price* item.Quantity)</td>
+                            <td>
+                                <div class="quantity-control">
+                                    @if (item.Quantity < item.Book.Stock.Quantity)
+                                    {
+                                        <a class="btn btn-primary btn-quantity" href="/Cart/AddItem?bookId=@item.BookId&&redirect=1">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="stock-message out-of-stock">
+                                            <i class="fas fa-exclamation-circle"></i> Out of stock
+                                        </span>
+                                    }
+                                    <a class="btn btn-danger btn-quantity" href="/cart/removeitem?bookid=@item.BookId">
+                                        <i class="fas fa-minus"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="cart-summary">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-0">Total (INR):</h4>
+                        <h3 class="text-success fw-bold">@(Model.CartDetails.Select(item => item.Book.Price * item.Quantity).Sum())</h3>
+                    </div>
+                    <a class="btn btn-checkout" href="/Cart/Checkout">
+                        <i class="fas fa-lock me-2"></i> Checkout
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <h3>Your cart is empty</h3>
+                <p class="lead">Looks like you haven't added any items to your cart yet.</p>
+                @* <a href="/Home/Index" class="btn btn-primary btn-sm mt-2">
+                    <i class="fas fa-book me-1"></i> Browse Books
+                </a> *@
+            </div>
+        }
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartItems = document.querySelectorAll('.cart-table tr');
+            cartItems.forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
