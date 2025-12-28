@@ -1,11 +1,11 @@
 
 ---
 
-# 📘 BookMartMVC – Hướng Dẫn Cài Đặt & Chạy Dự Án
+# 📘 BookStore – Hướng Dẫn Cài Đặt & Chạy Dự Án
 
 ## 1. Giới thiệu
 
-**BookMartMVC** là một hệ thống website thương mại điện tử bán sách trực tuyến, được xây dựng bằng **ASP.NET Core MVC**, sử dụng **Entity Framework Core**, **ASP.NET Identity**, và tích hợp **AI Chatbot (Google Gemini API)** để hỗ trợ người dùng.
+**Bookstore** là một hệ thống website thương mại điện tử bán sách trực tuyến, được xây dựng bằng **ASP.NET Core MVC**, sử dụng **Entity Framework Core**, **ASP.NET Identity**, và tích hợp **AI Chatbot (Google Gemini API)** để hỗ trợ người dùng.
 
 Tài liệu này hướng dẫn chi tiết **cách cài đặt và chạy project trên máy local**.
 
