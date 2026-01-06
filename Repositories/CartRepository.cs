@@ -200,7 +200,10 @@ namespace BookMart.Repositories
             }
             catch (Exception ex)
             {
-
+                transaction.Rollback();
+                // Log the error for debugging (you can use ILogger if available)
+                System.Diagnostics.Debug.WriteLine($"Checkout Error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
                 return false;
             }
         }
