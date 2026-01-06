@@ -114,7 +114,7 @@ namespace BookMart.Controllers
                             foreach (var order in orders)
                             {
                                 var total = order.OrderDetail.Sum(od => od.Quantity * od.UnitPrice);
-                                orderInfo.AppendLine($" Date: {order.CreateDate:yyyy-MM-dd}, Status: {order.OrderStatus.StatusName}, Total: Rs.{total}");
+                                orderInfo.AppendLine($" Date: {order.CreateDate:yyyy-MM-dd}, Status: {order.OrderStatus.StatusName}, Total: $.{total}");
                                 if (order.OrderDetail.Any())
                                 {
                                     orderInfo.Append("  Items: ");
