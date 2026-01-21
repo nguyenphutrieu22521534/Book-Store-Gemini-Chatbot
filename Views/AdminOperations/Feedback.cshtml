@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Feedback>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "User Feedback";
+
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">User Feedback</h2>
+
+    @if (TempData["msg"] != null)
+    {
+        <div class="alert alert-info">@TempData["msg"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">No feedback available.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead style="background-color:#0b1a3d; color:white;">
+                <tr>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Submitted At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fb in Model)
+                {
+                    <tr>
+                        <td>@fb.Email</td>
+                        <td>@fb.Message</td>
+                        <td>@fb.SubmittedAt.ToString("g")</td>
+                        <td>
+                            <a asp-action="DeleteFeedback" asp-route-id="@fb.Id"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Are you sure you want to delete this feedback?');">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -1,0 +1,86 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register Confirmation";
+}
+
+<!-- Theme Styles -->
+<style>
+    :root {
+        --color-primary: #1f2937;
+        --color-primary-hover: #374151;
+        --color-secondary: #6b7280;
+        --color-background: #f9fafb;
+        --color-surface: #ffffff;
+        --color-accent: #cbd5e1;
+        --color-text-dark: #111827;
+        --color-text-light: #ffffff;
+        --color-border: #e5e7eb;
+    }
+
+    body {
+        background-color: var(--color-background);
+        color: var(--color-text-dark);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card {
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 1rem;
+    }
+
+    .btn-theme {
+        background-color: var(--color-primary);
+        color: var(--color-text-light);
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-theme:hover {
+            background-color: var(--color-primary-hover);
+        }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5 text-center">
+                    <h2 class="fw-bold mb-3" style="color: var(--color-primary);">
+                        @ViewData["Title"]
+                    </h2>
+                    <p class="text-muted mb-4">
+                        Thank you for registering with <strong>BookMart</strong>.
+                    </p>
+
+                    @if (Model.DisplayConfirmAccountLink)
+                    {
+                        <div class="alert alert-warning text-start rounded-3" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            This app does not currently have a real email sender registered.
+                            See <a href="https://aka.ms/aspaccountconf" target="_blank" class="text-decoration-none fw-semibold">these docs</a> to configure a real email sender.
+                        </div>
+
+                        <p class="mb-4">
+                            Normally, you would receive a confirmation email.
+                            For now, click below to confirm your account manually:
+                        </p>
+
+                        <a id="confirm-link" href="@Model.EmailConfirmationUrl"
+                           class="btn btn-theme btn-lg rounded-3">
+                            <i class="bi bi-check-circle me-2"></i> Confirm Account
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success rounded-3" role="alert">
+                            <i class="bi bi-envelope-check me-2"></i>
+                            Please check your email to confirm your account.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

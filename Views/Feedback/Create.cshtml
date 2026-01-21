@@ -1,0 +1,78 @@
+﻿@model Feedback
+
+@{
+    ViewData["Title"] = "Feedback";
+}
+
+<style>
+    /* Card hover animation */
+    .feedback-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 15px;
+        background: #ffffffcc;
+    }
+
+        .feedback-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+    /* Floating label effect */
+    .form-floating > .form-control:focus ~ label,
+    .form-floating > .form-control:not(:placeholder-shown) ~ label {
+        opacity: 1;
+        transform: translateY(-1.5rem) scale(0.85);
+    }
+
+    /* Submit button animation */
+    .btn-submit {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .btn-submit::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover::after {
+            left: 0;
+        }
+</style>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center fw-bold text-primary animate__animated animate__fadeInDown">Give Us Your Feedback</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success animate__animated animate__fadeIn">@TempData["Success"]</div>
+    }
+
+    <form asp-action="Create" method="post" class="feedback-card p-5 shadow-sm mx-auto" style="max-width:600px;">
+        <div class="form-floating mb-4">
+            <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+            <label asp-for="Email">Email address</label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-4">
+            <textarea asp-for="Message" class="form-control" placeholder="Write your feedback..." style="height: 150px;"></textarea>
+            <label asp-for="Message">Your Feedback</label>
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+}

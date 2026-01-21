@@ -1,0 +1,60 @@
+﻿@model TopNSoldBooksVm
+@{
+    Layout = "_AdminLayout";
+
+}
+<div class="container mt-4">
+    <h3 class="mb-4 text-center text-dark">Top Selling Books</h3>
+
+    @if (Model != null)
+    {
+        <!-- Filter form -->
+        <form class="d-flex gap-2 flex-wrap justify-content-center mb-4" asp-action="TopFiveSellingBooks" method="get">
+            <input type="date" class="form-control" style="width: 200px;" name="sDate" />
+            <input type="date" class="form-control" style="width: 200px;" name="eDate" />
+            <button class="btn btn-primary">Filter</button>
+            <a class="btn btn-secondary" href="/Reports/TopFiveSellingBooks">Clear</a>
+        </form>
+
+        <div class="text-center mb-3 text-dark fw-bold">
+            Showing results from @Model.StartDate.ToString("dd-MMM-yyyy") to @Model.EndDate.ToString("dd-MMM-yyyy")
+        </div>
+
+        @if (Model.TopNSoldBooks == null || !Model.TopNSoldBooks.Any())
+        {
+            <div class="alert alert-info text-center">No records found</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center align-middle">
+                    <thead style="background-color:#0b1a3d; color:white;">
+                        <tr>
+                            <th style="width:50px;">No.</th>
+                            <th>Book</th>
+                            <th style="width:120px;">Sold Units</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.TopNSoldBooks.Count(); i++)
+                        {
+                            var item = Model.TopNSoldBooks.ElementAt(i);
+                            // Alternate row colors: white for even, gray for odd
+                            var rowClass = i % 2 == 0 ? "bg-white" : "bg-light";
+                            <tr class="@rowClass">
+                                <td>@(i + 1)</td>
+                                <td class="text-start ps-3">@item.BookName by @item.AuthorName</td>
+                                <td>@item.TotalUnitSold</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-danger text-center">Something went wrong</div>
+    }
+</div>

@@ -1,0 +1,88 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7 col-sm-9">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4 fw-bold text-primary">@ViewData["Title"]</h2>
+                    <p class="text-muted text-center mb-4">Use your local account to log in</p>
+
+                    <form id="account" method="post" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                        <!-- Email -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control rounded-3" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label asp-for="Input.Email"></label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control rounded-3" autocomplete="current-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.Password"></label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            <label class="form-check-label" asp-for="Input.RememberMe"></label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button id="login-submit" type="submit" class="btn btn-primary btn-lg rounded-3">
+                                <i class="bi bi-box-arrow-in-right me-2"></i> Log in
+                            </button>
+                        </div>
+
+                        <!-- Extra Links -->
+                        <div class="text-center mt-4">
+                            @* <p><a id="forgot-password" asp-page="./ForgotPassword" class="text-decoration-none">Forgot your password?</a></p> *@
+                            <p><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">Register as a new user</a></p>
+                            @* <p><a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-decoration-none">Resend email confirmation</a></p> *@
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- External Logins -->
+            <div class="card shadow-sm border-0 rounded-4 mt-4">
+                @* <div class="card-body text-center">
+                    <h5 class="fw-semibold mb-3">Or use another service</h5>
+                    <hr />
+                    @if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <p class="text-muted">
+                            No external authentication services are configured.
+                            <a href="https://go.microsoft.com/fwlink/?LinkID=532715" target="_blank" class="text-decoration-none">Learn how to set them up</a>.
+                        </p>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-outline-primary w-100 mb-2 rounded-3 fw-semibold"
+                                        name="provider" value="@provider.Name"
+                                        title="Log in using your @provider.DisplayName account">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i> @provider.DisplayName
+                                </button>
+                            }
+                        </form>
+                    }
+                </div> *@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "OrderSuccess";
+}
+
+<div class="success-container">
+    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+        <path class="checkmark-check" fill="none" d="M14 27l7 7 16-16" />
+    </svg>
+    <h1>Order Was Successful</h1>
+
+    <div class="btn-container">
+        <a href="/" class="btn btn-home">Back to Home</a>
+        <a href="/UserOrder/UserOrders" class="btn btn-orders">View Orders</a>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f9f9f9;
+    }
+
+    .success-container {
+        text-align: center;
+        margin-top: 80px;
+    }
+
+    .checkmark {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: inset 0px 0px 0px #4CAF50;
+        animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+    }
+
+    .checkmark-circle {
+        stroke: #4CAF50;
+        stroke-width: 2;
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-miterlimit: 10;
+        fill: none;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .checkmark-check {
+        stroke: #fff;
+        stroke-width: 4;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+
+    @@keyframes stroke {
+        100%
+
+    {
+        stroke-dashoffset: 0;
+    }
+
+    }
+
+    @@keyframes scale {
+        0%, 100%
+
+    {
+        transform: none;
+    }
+
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+
+    }
+
+    @@keyframes fill {
+        100%
+
+    {
+        box-shadow: inset 0px 0px 0px 60px #4CAF50;
+    }
+
+    }
+
+    h1 {
+        color: #333;
+        font-size: 1.6rem;
+        margin-top: 20px;
+    }
+
+    .btn-container {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .btn {
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: background 0.3s, color 0.3s;
+    }
+
+    .btn-home {
+        background: #4CAF50;
+        color: white;
+    }
+
+        .btn-home:hover {
+            background: #45a049;
+        }
+
+    .btn-orders {
+        border: 2px solid #4CAF50;
+        color: #4CAF50;
+        background: white;
+    }
+
+        .btn-orders:hover {
+            background: #f1f1f1;
+        }
+</style>
